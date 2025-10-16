@@ -1,10 +1,46 @@
 const express = require("express");
+const morgan = require("morgan");
 const app = express();
+
+const dbConnection = require("./config/db");
+const userModel = require("./models/user");
+// morgan is a middleware used for logging and debugging
+app.use(morgan("dev"));
+
+// built-in middleware to handle urlencoded form data
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+
+app.use(express.static("public")); // to serve static files like css, js, images
 
 app.set("view engine", "ejs");
 
+// custom middleware
+// app.use((req, res, next) => {
+//   console.log("this is middleware");
+// res.send("Response from middleware");
+// const a = 2,
+//   b = 3;
+// console.log("Sum is ", a + b);
+// res.send(a + b);
+//   next();
+// });
+
+// custom and third party middleware for specific route
+// app.get(
+//   "/",
+//   (req, res, next) => {
+//     console.log("this middleware is used only for / route");
+//     next();
+//   },
+//   (req, res) => {
+//     res.send("Hello World!");
+//   }
+// );
+
 app.get("/", (req, res) => {
-  res.send("Hello World!");
+  // res.send("Home Page");
+  res.render("index"); // rendering index.ejs file
 });
 
 app.get("/about", (req, res) => {
@@ -13,6 +49,14 @@ app.get("/about", (req, res) => {
 
 app.get("/contact", (req, res) => {
   res.send("Contact Page");
+});
+
+app.post("/get-form-data", (req, res) => {
+  console.log(req.query); // for get request
+
+  console.log(req.body); // for post request
+  // res.send(req.query);
+  res.send("Form Data Received");
 });
 
 app.listen(3000);

@@ -77,4 +77,32 @@ app.post("/register", async (req, res) => {
   // console.log(req.body);
   res.send(newUser);
 });
+
+// CRUD - Read operation
+app.get("/get-users", (req, res) => {
+  userModel
+    .find({
+      username: "dsp",
+    })
+    .then((users) => {
+      res.send(users);
+    });
+});
+
+// CRUD - Update Operation
+app.get("/update-user", async (req, res) => {
+  await userModel.findOneAndUpdate(
+    { username: "dsp" },
+    { email: "dsp2@gmail.com" }
+  );
+  res.send("user has updated!");
+});
+
+// CRUD - Delete Operation
+app.get("/delete-user", async (req, res) => {
+  await userModel.findOneAndDelete({
+    username: "dh",
+  });
+  res.send("user has deleted!");
+});
 app.listen(3000);

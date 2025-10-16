@@ -59,4 +59,22 @@ app.post("/get-form-data", (req, res) => {
   res.send("Form Data Received");
 });
 
+// show the register form
+app.get("/register", (req, res) => {
+  res.render("register");
+});
+
+// use to create the register form
+app.post("/register", async (req, res) => {
+  const { username, email, password } = req.body;
+
+  const newUser = await userModel.create({
+    username: username,
+    email: email,
+    password: password,
+  });
+
+  // console.log(req.body);
+  res.send(newUser);
+});
 app.listen(3000);
